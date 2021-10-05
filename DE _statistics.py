@@ -66,9 +66,7 @@ def volume(diameter):
 
 df_droplets['volume'] = df_droplets['dia_drop'].apply(volume)
 
-# add column to df_droplets with volume of droplet, variable v_inner_drop = 4/3*pi*dia_inner_drop^3
-
-#df_droplets['inner_volume'] = df_droplets['dia_inner_drop'].apply(volume)
+#add column to df_droplets with volume of droplet, variable v_inner_drop = 4/3*pi*dia_inner_drop^3
 #if dbl_emul > 1 add NaN to column
 
 df_droplets['inner_volume'] = np.where(df_droplets['dble_emul'] > 1 , np.nan, df_droplets['dia_inner_drop'].apply(volume))
@@ -81,13 +79,13 @@ df_droplets.to_csv('dataframe_droplets.csv')
 
 ### SUMMARY TABLE
 
-# find maximum index in df_droplet, this is total number of droplets detected, assign as variable n_drops
+# length of df_droplets is total number of droplets detected, assign as variable n_drops
 n_drops = len(df_droplets.index)
 
-# find number of droplets were dble_emul is 1, variable n_de_drops
+# find number of double emulsiondroplets (meaining where dble_emul is 1), assign as variable n_de_drops
 n_de_drops = (df_droplets['dble_emul'] == 1).sum()
 
-# calculate percentage of double-emulsion droplets, variable percent_de = n_drops/n_de-drops
+# calculate percentage of double-emulsion droplets, variable percent_de = n_drops/n_de_drops
 percent_de = n_de_drops/n_drops
 
 # calculate mean volume and standard deviation of volume from df_droplets
@@ -95,7 +93,7 @@ mean_vol = np.mean(df_droplets['volume'])
 std_vol = np.std(df_droplets['volume'])
 
 # calculate mean volume and standard deviation of volume from df_droplets for inner droplet
-de_true = df_droplets[df_droplets["dble_emul"] == 1] #create dataframe of droplets that ahve single double-emulsion
+de_true = df_droplets[df_droplets["dble_emul"] == 1] #create dataframe of droplets that have single double-emulsion
 
 mean_inner_vol = np.mean(de_true['inner_volume'])
 std_inner_vol = np.std(de_true['inner_volume'])
