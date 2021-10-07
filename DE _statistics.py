@@ -12,10 +12,11 @@ img = cv2.imread('DEimage.tif',0)
 img = cv2.medianBlur(img,5)
 cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 
-#detect circles
+#detect circles and create 'circles' array with x and y coordinates and circle radius
 circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,7,
                param1=290,param2=100,minRadius=0,maxRadius=0)
 
+#draw circles in photo and display it
 circles = np.uint16(np.around(circles))
 for i in circles[0,:]:
     # draw the outer circle
@@ -28,15 +29,13 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-### CREATE DATAFRAME WITH IMAGE RECOGNITION
-# Detect droplets
-# Index droplets, variable i_drop
-# Create dataframe df_droplets with i_drop
-# Measure droplet diameter, variable dia_drop, add as column
-# Detect double-emulsion droplets, variable dble_emul, add as column
-# Measure inner droplet diameter for double emulsions, variable dia_inner_drop, add as column
-# Detect number of cells in droplet, variable n_cell, add as column
+### Still to do:
+# - fine-tune parameters in cv2.HoughCircles so that all droplets are detected
+# - detect cells in droplets, assign variable n_cells
+# - detect if droplet is double-emulsion droplet or not, assign variable dble-emul
+# - create dataframe with droplet index, radius, dble-emul, n_cells
 
+# for now keep working with example dataframe
 # import example dataframe from csv
 df_droplets = pd.read_csv('df_droplets.csv')
 
