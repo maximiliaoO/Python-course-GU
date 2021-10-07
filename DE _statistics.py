@@ -5,18 +5,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # read image
-img = cv2.imread('DEimage.tif')
+# greyscale
+# blur
 
-# Blur the image for better edge detection
-img_blur = cv2.GaussianBlur(img, (5, 5), 0)
+img = cv2.imread('DEimage.tif',0)
+img = cv2.medianBlur(img,5)
+cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 
-# Canny Edge Detection
-edges = cv2.Canny(image=img_blur, threshold1=100, threshold2=100)
+#detect circles
+circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,7,
+               param1=290,param2=100,minRadius=0,maxRadius=0)
 
-# Display Canny Edge Detection Image
-cv2.imshow('Canny Edge Detection', edges)
-cv2.waitKey(1000)
+circles = np.uint16(np.around(circles))
+for i in circles[0,:]:
+    # draw the outer circle
+    cv2.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+    # draw the center of the circle
+    cv2.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
 
+cv2.imshow('detected circles',cimg)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
 ### CREATE DATAFRAME WITH IMAGE RECOGNITION
